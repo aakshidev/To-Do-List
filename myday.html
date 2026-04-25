@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Day</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #FAF8F4;
+    color: #111;
+}
+
+/* HEADER (same as index) */
+header {
+    background: white;
+    padding: 30px 40px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 40px;
+}
+
+header p {
+    color: #666;
+    margin-top: 5px;
+}
+
+/* MAIN CONTAINER */
+.container {
+    padding: 20px 40px;
+}
+
+/* SECTION TITLE */
+h2 {
+    color: #B5B2AC;
+}
+
+/* INPUT AREA */
+.input-box {
+    margin: 20px 0;
+}
+
+input {
+    padding: 12px;
+    width: 250px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    background: white;
+}
+
+button {
+    padding: 12px 18px;
+    margin-left: 10px;
+    border-radius: 8px;
+    border: none;
+    background: #000104;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+}
+
+/* TASK CARDS (same aesthetic as index cards) */
+.task {
+    background: #000104;
+    color: white;
+    padding: 16px;
+    border-radius: 10px;
+    margin-top: 10px;
+    width: 300px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.task button {
+    background: transparent;
+    color: #B5B2AC;
+    border: none;
+    font-size: 16px;
+}
+
+/* DIVIDER */
+hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 20px 0;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>My Day</h1>
+    <p>Focus on what's due today</p>
+</header>
+
+<div class="container">
+
+    <hr>
+    <h2>Tasks</h2>
+    <hr>
+
+    <div class="input-box">
+        <input type="text" id="taskInput" placeholder="Enter your task">
+        <button onclick="addTask()">Add</button>
+    </div>
+
+    <div id="taskList"></div>
+
+</div>
+
+<script>
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+function renderTasks() {
+    let list = document.getElementById("taskList");
+    list.innerHTML = "";
+
+    tasks.forEach((task, index) => {
+        list.innerHTML += `
+            <div class="task">
+                ${task}
+                <button onclick="deleteTask(${index})">✕</button>
+            </div>
+        `;
+    });
+}
+
+function addTask() {
+    let input = document.getElementById("taskInput");
+
+    if (input.value.trim() === "") return;
+
+    tasks.push(input.value);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    input.value = "";
+    renderTasks();
+}
+
+function deleteTask(index) {
+    tasks.splice(index, 1);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+    renderTasks();
+}
+
+renderTasks();
+</script>
+
+</body>
+</html>
